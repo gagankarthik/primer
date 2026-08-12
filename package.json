@@ -1,0 +1,32 @@
+{
+  "name": "primer",
+  "version": "0.1.0",
+  "private": true,
+  "//": "UI-only phase. No provider SDKs, no AWS SDKs, no credentials needed. Runs entirely on src/lib/mock.ts. See docs/BACKEND-PLAN.md for what gets wired in next.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "imagesloaded": "^5.0.0",
+    "lucide-react": "^1.31.0",
+    "motion": "^13.1.0",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.7.0",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/imagesloaded": "^4.1.7",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.8.3"
+  }
+}

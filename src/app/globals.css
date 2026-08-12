@@ -1,0 +1,394 @@
+@import "tailwindcss";
+
+/*
+  THE PRIMER — design tokens
+  Direction: crisp modern tech. Cool near-white, one confident indigo,
+  hairline borders, tight shadows, 16px radius, product-forward.
+*/
+@theme {
+  /* Ground */
+  --color-base: #fbfcfd;
+  --color-surface: #ffffff;
+  --color-line: #e6e9ef;
+  --color-line-strong: #d3d8e2;
+
+  /* Type */
+  --color-ink: #0b1220;
+  --color-ink-70: #414b5e;
+  --color-ink-45: #737d90;
+
+  /* Anchor */
+  --color-indigo: #3d4ee8;
+  --color-indigo-hi: #5b69ee;
+  --color-indigo-tint: #eef1fe;
+  --color-grey-tint: #f2f4f7;
+
+  /* Signal */
+  --color-green: #12b981;
+  --color-green-tint: #e6f7f1;
+  --color-amber: #f0a020;
+  --color-rose: #e5484d;
+
+  /*
+    THE HELP SCALE — cool to warm, rung 0 to rung 5.
+
+    Adapted from the "Ocean Sunset" palette. The point is that colour carries
+    the meaning rather than decorating it: a session that stays cool is a child
+    reasoning their way in, and a session that runs warm is a child who had to
+    be walked there. A parent learns to read the temperature of the trace
+    before they read any of its numbers.
+
+    Deliberately not red at the warm end. Needing help is not an error, and
+    colouring it like one would teach exactly the wrong lesson to the person
+    paying for the thing.
+  */
+  --color-help-0: #3e5c76;
+  --color-help-1: #5b7897;
+  --color-help-2: #8d8caa;
+  --color-help-3: #b98b92;
+  --color-help-4: #e0959e;
+  --color-help-5: #f4a896;
+
+  /* Dark surfaces — the child's night-reading app, same navy family */
+  --color-night: #0b1220;
+  --color-night-2: #141c2e;
+  --color-night-line: #222c42;
+  --color-chalk: #e9edf4;
+  --color-chalk-dim: #8792a6;
+
+  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  --font-read: var(--font-atkinson), system-ui, sans-serif;
+  --font-figure: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Tight, layered shadows — the crisp-tech signature. Never soft blooms. */
+  --shadow-tight: 0 1px 2px rgba(11, 18, 32, 0.04), 0 2px 6px rgba(11, 18, 32, 0.04);
+  --shadow-lift: 0 1px 2px rgba(11, 18, 32, 0.05), 0 8px 24px rgba(11, 18, 32, 0.07);
+  --shadow-pop: 0 2px 4px rgba(11, 18, 32, 0.06), 0 16px 48px rgba(11, 18, 32, 0.11);
+}
+
+@utility eyebrow {
+  font-family: var(--font-figure);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility figure-num {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display type is set tight and heavy — the crisp-tech register. */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5.6vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.875rem, 3.6vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+}
+
+/* Child-facing reading text. Atkinson Hyperlegible, loose leading — early
+   readers track with a finger and lose their place in tight lines. */
+@utility read-lg {
+  font-family: var(--font-read);
+  font-size: clamp(1.5rem, 1.1rem + 2vw, 2.25rem);
+  line-height: 1.65;
+}
+
+/* Hides the scrollbar on a horizontal card track while leaving the element
+   scrollable. Only for rows that carry their own visible affordance (arrow
+   buttons, cards cut off at the edge) — hiding the bar on anything else
+   removes the only sign that there is more to see. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-indigo);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+@keyframes ring-out {
+  from {
+    transform: scale(0.94);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Marquee for the logo/proof strip. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Skeleton sweep. A sweep reads as "loading"; a pulse reads as
+   "broken/retrying" — the difference matters on a first visit. */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* 404 — the two digits open like a curtain, the character pops in between.
+   See components/marketing/LostCharacter.tsx for why these are CSS and not
+   Motion variants. */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-44px) translateY(12px) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(44px) translateY(12px) rotate(6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   CUBE LOADER
+
+   Four isometric cubes trading places in a loop. Ported from a
+   styled-components original into plain CSS on purpose: this app is mostly
+   React Server Components, and pulling in a CSS-in-JS runtime for one spinner
+   would add a client boundary and a bundle for no benefit. Same animation,
+   nothing shipped to the browser but CSS.
+
+   Recoloured to the product palette — the original's #5C8DF6 blues are swapped
+   for the indigo ramp so it reads as ours rather than as a pasted-in snippet.
+   The three lit faces plus one recessed face give it its depth; keep the
+   ordering if you re-theme it.
+--------------------------------------------------------------------------- */
+.cube-loader {
+  --cube: 32px;
+  --cube-duration: 800ms;
+  height: calc(var(--cube) * 2);
+  width: calc(var(--cube) * 3);
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  margin-top: calc(var(--cube) * 1.5 * -1);
+  transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0);
+}
+
+.cube-loader .cube {
+  width: var(--cube);
+  height: var(--cube);
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.cube-loader .cube:nth-child(1) {
+  transform: translate(100%, 0);
+  animation: cube1 var(--cube-duration) linear infinite;
+}
+.cube-loader .cube:nth-child(2) {
+  transform: translate(0, 100%);
+  animation: cube2 var(--cube-duration) linear infinite;
+}
+.cube-loader .cube:nth-child(3) {
+  transform: translate(100%, 100%);
+  animation: cube3 var(--cube-duration) linear infinite;
+}
+.cube-loader .cube:nth-child(4) {
+  transform: translate(200%, 0);
+  animation: cube4 var(--cube-duration) linear infinite;
+}
+
+.cube-loader .cube > div {
+  --face: var(--color-indigo);
+  --top: auto;
+  --right: auto;
+  --bottom: auto;
+  --left: auto;
+  --tz: calc(var(--cube) / 2);
+  --ry: 0deg;
+  --rx: 0deg;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--face);
+  top: var(--top);
+  right: var(--right);
+  bottom: var(--bottom);
+  left: var(--left);
+  transform: rotateY(var(--ry)) rotateX(var(--rx)) translateZ(var(--tz));
+}
+
+/* top face */
+.cube-loader .cube > div:nth-child(1) {
+  --top: 0;
+  --left: 0;
+}
+/* right face — darkest, so the light reads as coming from the left */
+.cube-loader .cube > div:nth-child(2) {
+  --face: #2a38c4;
+  --right: 0;
+  --ry: 90deg;
+}
+/* front face */
+.cube-loader .cube > div:nth-child(3) {
+  --face: var(--color-indigo-hi);
+  --rx: -90deg;
+}
+/* recessed face — the shadow the cube leaves behind as it moves */
+.cube-loader .cube > div:nth-child(4) {
+  --face: var(--color-indigo-tint);
+  --top: 0;
+  --left: 0;
+  --tz: calc(var(--cube) * 3 * -1);
+}
+
+@keyframes cube1 {
+  0%,
+  50% {
+    transform: translate(100%, 0);
+  }
+  100% {
+    transform: translate(200%, 0);
+  }
+}
+
+@keyframes cube2 {
+  0% {
+    transform: translate(0, 100%);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100%, 0);
+  }
+}
+
+@keyframes cube3 {
+  0%,
+  50% {
+    transform: translate(100%, 100%);
+  }
+  100% {
+    transform: translate(0, 100%);
+  }
+}
+
+@keyframes cube4 {
+  0% {
+    transform: translate(200%, 0);
+  }
+  50% {
+    transform: translate(200%, 100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
