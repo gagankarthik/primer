@@ -28,6 +28,14 @@ export function SignInForm() {
 
   return (
     <div>
+      {/*
+        Two tabs, not four. Parent and learner are the two doors on the public
+        site, and they take different credentials, so a chooser is genuinely
+        needed. Creators and admins sign in with an email and password like a
+        parent does and are routed by what their account is, which is why they
+        are a line of text below rather than tabs: putting "I'm an admin" on a
+        public sign-in page advertises that there is an admin console to attack.
+      */}
       <div
         role="tablist"
         aria-label="Who is signing in"
@@ -58,6 +66,27 @@ export function SignInForm() {
       </div>
 
       {role === "parent" ? <ParentForm /> : <LearnerForm />}
+
+      {role === "parent" && (
+        <p className="mt-6 border-t border-line pt-5 text-[0.8125rem] leading-relaxed text-ink-45">
+          Writing modules for us, or on the team? Sign in here with the same
+          email and you&rsquo;ll land in{" "}
+          <Link
+            href="/studio"
+            className="font-medium text-indigo underline underline-offset-4"
+          >
+            Studio
+          </Link>{" "}
+          or{" "}
+          <Link
+            href="/admin"
+            className="font-medium text-indigo underline underline-offset-4"
+          >
+            Admin
+          </Link>
+          .
+        </p>
+      )}
     </div>
   );
 }

@@ -16,7 +16,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/learning/", "/parent/", "/onboarding", "/api/"],
+        disallow: [
+          "/learning/",
+          "/parent/",
+          "/admin",
+          "/studio",
+          "/onboarding",
+          "/api/",
+        ],
       },
     ],
     sitemap: `${SITE}/sitemap.xml`,
